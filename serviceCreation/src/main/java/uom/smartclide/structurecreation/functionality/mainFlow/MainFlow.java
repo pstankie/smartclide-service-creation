@@ -1,4 +1,4 @@
-package com.example.demo.functionality.tempName;
+package uom.smartclide.structurecreation.functionality.mainFlow;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -6,8 +6,9 @@ import java.net.URISyntaxException;
 import org.dom4j.DocumentException;
 import org.gitlab4j.api.GitLabApiException;
 
-import com.example.demo.functionality.apis.GitLab;
-import com.example.demo.functionality.apis.Jenkins;
+import uom.smartclide.structurecreation.functionality.apis.GitLab;
+import uom.smartclide.structurecreation.functionality.apis.Jenkins;
+import uom.smartclide.structurecreation.functionality.utils.ResultObject;
 
 public class MainFlow {
 		
@@ -24,14 +25,14 @@ public class MainFlow {
      * @return a ResultObject with a status and a message, depending on the result
      * 
      */
-	public static ResultObject createStructure(String projectName, String gitURL, String gitToken, String jekninsURL, String jenkinsUsername, String jenkinsToken) {
+	public static ResultObject createStructureJenkins(String projectName, String projVisibility, String projDescription, String gitURL, String gitToken, String jekninsURL, String jenkinsUsername, String jenkinsToken) {
 		
 		GitLab gitApi = new GitLab(gitToken, gitURL);
 		boolean result = true;
 		try {
 			if(gitApi.isProjectNameAvailable(projectName)) {
 				try {
-					result = gitApi.createProject(projectName);
+					result = gitApi.createProjectWithJenkinsCI(projectName, projVisibility, projDescription);
 				} catch (GitLabApiException e) {
 					e.printStackTrace();
 					return new ResultObject(1, "Error during GitLab repository creation");
@@ -84,6 +85,49 @@ public class MainFlow {
 			//failed to add webhook to GitLab repository so it is deleted
 			e.printStackTrace();
 			return deleteRepository(gitApi, projectName, "Failed to add webhook to GitLab repository");
+		}
+		
+		String gitRepoURL;
+		try {
+			gitRepoURL = gitApi.getProjectUrl(projectName);
+		} catch (GitLabApiException e) {
+			e.printStackTrace();
+			return deleteRepository(gitApi, projectName, "Failed to find the URL of the GitLab repository");
+		}
+		
+		gitApi.close();
+		
+		return new ResultObject(0, gitRepoURL);
+	}
+	
+	public static ResultObject createStructure(String projectName, String projVisibility, String projDescription, String gitURL, String gitToken) {
+		
+		GitLab gitApi = new GitLab(gitToken, gitURL);
+		boolean result = true;
+		try {
+			if(gitApi.isProjectNameAvailable(projectName)) {
+				try {
+					result = gitApi.createProjectWithGitlabCI(projectName, projVisibility, projDescription);
+				} catch (GitLabApiException e) {
+					e.printStackTrace();
+					return new ResultObject(1, "Error during GitLab repository creation");
+				}
+			}else {
+				return new ResultObject(1, "A GitLab repository with the name \'"+projectName+"\' already exists");
+			}
+		} catch (GitLabApiException e) {
+			e.printStackTrace();
+			return new ResultObject(1, "Problem with GitLab api");
+		}
+		
+		if(!result) return new ResultObject(1, "Error during GitLab repository creation");
+		
+		String projectHttpURL;
+		try {
+			projectHttpURL = gitApi.getProjectUrl(projectName);
+		} catch (GitLabApiException e2) {
+			e2.printStackTrace();
+			return deleteRepository(gitApi, projectName, "Failed to find the URL of the GitLab repository");
 		}
 		
 		String gitRepoURL;

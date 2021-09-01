@@ -1,4 +1,4 @@
-package com.example.demo.functionality.apis;
+package uom.smartclide.structurecreation.functionality.apis;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,9 +8,10 @@ import java.util.Map;
 import org.apache.http.client.HttpResponseException;
 import org.dom4j.DocumentException;
 
-import com.example.demo.functionality.tempName.PipelineConfigXML;
 import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.model.Job;
+
+import uom.smartclide.structurecreation.functionality.utils.PipelineConfigXML;
 
 public class Jenkins {
 	

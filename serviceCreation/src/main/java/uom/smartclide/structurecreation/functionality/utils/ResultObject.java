@@ -1,4 +1,4 @@
-package com.example.demo.functionality.tempName;
+package uom.smartclide.structurecreation.functionality.utils;
 
 public class ResultObject {
 	int status;

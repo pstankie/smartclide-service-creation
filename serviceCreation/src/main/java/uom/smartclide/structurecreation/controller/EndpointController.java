@@ -18,30 +18,34 @@ public class EndpointController {
 		return "Hello, placeholder for Git repo URL";
 	}
 
+	@CrossOrigin(origins = "*")
 	@PostMapping("/createStuctureJenkins")
 	public ResultObject createStuctureJenkins(@RequestHeader String projectName, @RequestHeader String projVisibility,
 			@RequestHeader String projDescription, @RequestHeader String gitLabServerURL,
 			@RequestHeader String gitlabToken, @RequestHeader String jenkinsServerUrl,
 			@RequestHeader String jenkinsUsername, @RequestHeader String jenkinsToken) {
 
-		if (isNullOrBlank(projectName) || isNullOrBlank(gitLabServerURL) || isNullOrBlank(gitlabToken)
-				|| isNullOrBlank(jenkinsServerUrl) || isNullOrBlank(jenkinsUsername) || isNullOrBlank(jenkinsToken)) {
+		if (isEmptyOrNull(projectName) || isEmptyOrNull(gitLabServerURL) || isEmptyOrNull(gitlabToken)
+				|| isEmptyOrNull(jenkinsServerUrl) || isEmptyOrNull(jenkinsUsername) || isEmptyOrNull(jenkinsToken)
+				|| isEmptyOrNull(projVisibility) || isEmptyOrNull(projDescription)) {
 			return new ResultObject(1, "One or more fields are empty or blank");
 		}
 		ResultObject ret = new ResultObject(1, "Creation Failed");
-		ret = MainFlow.createStructureJenkins(projectName, projVisibility, projDescription, gitLabServerURL, gitlabToken,
-				jenkinsServerUrl, jenkinsUsername, jenkinsToken);
+		ret = MainFlow.createStructureJenkins(projectName, projVisibility, projDescription, gitLabServerURL,
+				gitlabToken, jenkinsServerUrl, jenkinsUsername, jenkinsToken);
 
 		return ret;
 	}
 
-	@PostMapping("/createStucture")
+	@CrossOrigin(origins = "*")
+	@PostMapping("/createStructure")
 	public ResultObject createStructure(@RequestHeader String projectName, @RequestHeader String projVisibility,
 			@RequestHeader String projDescription, @RequestHeader String gitLabServerURL,
 			@RequestHeader String gitlabToken) {
 
-		if (isNullOrBlank(projectName) || isNullOrBlank(gitLabServerURL) || isNullOrBlank(gitlabToken)) {
-			return new ResultObject(1, "One or more fields are empty or blank");
+		if (isEmptyOrNull(projectName) || isEmptyOrNull(gitLabServerURL) || isEmptyOrNull(gitlabToken)
+				|| isEmptyOrNull(projVisibility) || isEmptyOrNull(projDescription)) {
+			return new ResultObject(1, "One or more fields are empty or null");
 		}
 		ResultObject ret = new ResultObject(1, "Creation Failed");
 		ret = MainFlow.createStructure(projectName, projVisibility, projDescription, gitLabServerURL, gitlabToken);
@@ -50,7 +54,7 @@ public class EndpointController {
 
 	}
 
-	private boolean isNullOrBlank(String str) {
-		return (str.isBlank() || str == null);
+	private boolean isEmptyOrNull(String str) {
+		return (str.isEmpty() || str == null);
 	}
 }

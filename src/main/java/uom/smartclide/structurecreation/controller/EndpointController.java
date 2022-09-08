@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uom.smartclide.structurecreation.functionality.mainFlow.MainFlow;
 import uom.smartclide.structurecreation.functionality.utils.ResultObject;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class EndpointController {
 
@@ -28,7 +28,7 @@ public class EndpointController {
 		return "Hello, placeholder for Git repo URL";
 	}
 
-	@CrossOrigin(origins = "*")
+	//@CrossOrigin(origins = "*")
 	@PostMapping("/createStuctureJenkins")
 	public ResultObject createStuctureJenkins(@RequestHeader String projectName, @RequestHeader String projVisibility,
 			@RequestHeader String projDescription, @RequestHeader String gitLabServerURL,
@@ -47,7 +47,7 @@ public class EndpointController {
 		return ret;
 	}
 
-	@CrossOrigin(origins = "*")
+	//@CrossOrigin(origins = "*")
 	@PostMapping("/createStructure")
 	public ResultObject createStructure(@RequestHeader String projectName, @RequestHeader String projVisibility,
 			@RequestHeader String projDescription, @RequestHeader String gitLabServerURL,

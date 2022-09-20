@@ -40,6 +40,8 @@ public class EndpointController {
 				|| isEmptyOrNull(projVisibility) || isEmptyOrNull(projDescription)) {
 			return new ResultObject(1, "One or more fields are empty or blank");
 		}
+
+		projectName = projectName.replaceAll("( )+","-");
 		ResultObject ret = new ResultObject(1, "Creation Failed");
 		ret = MainFlow.createStructureJenkins(projectName, projVisibility, projDescription, gitLabServerURL,
 				gitlabToken, jenkinsServerUrl, jenkinsUsername, jenkinsToken);
@@ -57,6 +59,8 @@ public class EndpointController {
 				|| isEmptyOrNull(projVisibility) || isEmptyOrNull(projDescription)) {
 			return new ResultObject(1, "One or more fields are empty or null");
 		}
+
+		projectName = projectName.replaceAll("( )+","-");
 		ResultObject ret = new ResultObject(1, "Creation Failed");
 		ret = MainFlow.createStructure(projectName, projVisibility, projDescription, gitLabServerURL, gitlabToken);
 

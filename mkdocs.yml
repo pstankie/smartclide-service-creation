@@ -1,5 +1,5 @@
 site_name: SmartCLIDE Service Creation
-repo_url: https://github.com/eclipse-researchlabs/smartclide-service-creation
+repo_url: https://github.com/eclipse-opensmartclide/smartclide-service-creation
 
 nav:
   - Service Creation Backend: 'index.md'

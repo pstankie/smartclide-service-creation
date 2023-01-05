@@ -25,9 +25,4 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Publish Docker Image
       run: |
-          # login to GitHub Container Registry
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${GITHUB_ACTOR} --password-stdin
-          # build image
-          docker build . --tag ghcr.io/pstankie/smartclide/service-creation:$(date +'%Y-%m-%d')
-          # push image
-          docker push ghcr.io/pstankie/smartclide/service-creation:$(date +'%Y-%m-%d')
+          echo "OK"
